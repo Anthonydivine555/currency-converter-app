@@ -5,10 +5,10 @@ import {TabNavigation} from '../tabs/TabNavigation'
 
 export function MainLayout() {
   return (
-    <div className='h-screen'>
+    <div className='min-h-screen'>
       <Header/>
       <LiveMarketTicker />
-      <main className='max-w-6xl w-[90%] mx-auto py-[48px]'>
+      <main className='max-w-5xl w-[90%] mx-auto py-[48px]'>
         <ConverterSection/>
         <TabNavigation/>
       </main>

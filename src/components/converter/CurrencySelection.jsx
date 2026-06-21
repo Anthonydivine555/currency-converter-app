@@ -3,7 +3,7 @@ import { useState } from "react";
 // import CurrencyInput from "react-currency-input-field";
 
 export function CurrencySelection({ color, heading, image, CurrencyName}) {
-  const [inputValue, setInputValue] = useState(null)
+  const [inputValue, setInputValue] = useState('')
 
   return (
     <div className="p-[20px] bg-[#202022] rounded-2xl flex flex-col gap-[20px] w-full md:w-[40%] border border-[#2E2E2E]">
@@ -13,7 +13,7 @@ export function CurrencySelection({ color, heading, image, CurrencyName}) {
           type="number"
           className={`text-[32px] md:text-[40px] flex-1 min-w-0 outline-0`}
           value={inputValue}
-          onValueChange={(event) => {setInputValue(event.target.value)
+          onChange={(event) => {setInputValue(event.target.value)
           
             console.log('hey')
           }}
