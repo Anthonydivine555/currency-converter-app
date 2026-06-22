@@ -12,7 +12,10 @@ export function TabNavigation() {
   return(
     <div className='flex w-full flex-col gap-[20px]'>
       <TabHeader activeTab={activeTab} setActiveTab={setActiveTab} isOpen={isOpen} setIsOpen={setIsOpen} />
-      <HistoryTab/>
+      {activeTab === "HISTORY" && <HistoryTab/>}
+      {activeTab === "FAVOURITE" && <FavouriteTab/>}
+      {activeTab === "COMPARE" && <CompareTab/>}
+      {activeTab === "LOG" && <LogTab/>}
     </div>
   )
 }

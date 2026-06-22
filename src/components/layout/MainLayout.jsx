@@ -8,7 +8,7 @@ export function MainLayout() {
     <div className='min-h-screen'>
       <Header/>
       <LiveMarketTicker />
-      <main className='max-w-5xl w-[90%] mx-auto py-[48px]'>
+      <main className='max-w-5xl w-[95%] mx-auto py-[48px]'>
         <ConverterSection/>
         <TabNavigation/>
       </main>
