@@ -15,12 +15,7 @@ export function HistoryChart({ period }) {
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={chartData[period]}
-          margin={{
-            top: 20,
-            right: 20,
-            left: 20,
-            bottom: 20,
-          }}
+          
         >
           <defs>
             <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
@@ -43,10 +38,7 @@ export function HistoryChart({ period }) {
               fill: "#6B7280",
               fontSize: 12,
             }}
-            padding={{
-              left: 10,
-              right: 10,
-            }}
+            
             interval={Math.floor(chartData[period].length / 5)}
           />
 

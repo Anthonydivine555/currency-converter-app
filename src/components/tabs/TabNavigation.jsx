@@ -7,10 +7,11 @@ import { useState } from "react";
 
 
 export function TabNavigation() {
-  const [activeTab, setActiveTab] = useState("HISTORY")
+  const [activeTab, setActiveTab] = useState("HISTORY");
+  const [isOpen, setIsOpen] = useState(false);
   return(
     <div className='flex w-full flex-col gap-[20px]'>
-      <TabHeader activeTab={activeTab} setActiveTab={setActiveTab}/>
+      <TabHeader activeTab={activeTab} setActiveTab={setActiveTab} isOpen={isOpen} setIsOpen={setIsOpen} />
       <HistoryTab/>
     </div>
   )
