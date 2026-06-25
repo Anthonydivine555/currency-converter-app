@@ -1,14 +1,65 @@
 import { Button } from "./Button";
 import { CurrencySelection } from "./CurrencySelection";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export function ConverterSection() {
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("EUR");
+  const [amount, setAmount] = useState(1);
+  const [convertedAmount, setConvertedAmount] = useState("");
+  const [rate, setRate] = useState(null);
+
+  
+  const convertCurrency = async () => {
+     try {
+    const response = await axios.get(
+      `https://api.frankfurter.dev/v2/rate/${fromCurrency}/${toCurrency}`
+    );
+
+    const exchangeRate = response.data.rate;
+
+    setRate(exchangeRate)
+    
+    setConvertedAmount((amount * exchangeRate).toFixed(2));
+  } catch (error) {
+    console.error(error);
+  }     
+  };
+
+  useEffect(() => {
+    if (fromCurrency === toCurrency) {
+      setConvertedAmount(amount);
+      return;
+    }
+    convertCurrency();
+  }, [amount, fromCurrency, toCurrency]);
+
+  function handleSwaping() {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+    convertCurrency()
+  }
+
   return (
     <div className="converter-wrapper flex flex-col gap-[16px] w-full mb-10">
       <h1 className="text-lg md:text-xl mb-4 text-white">CHECK THE RATE</h1>
-      <div className="block bg-[#171719] rounded-[20px] overflow-hidden">
+      <div className="block bg-[#171719] rounded-[20px]">
         <div className="w-full top-container p-[20px] flex gap-[24px] items-center justify-between box-border flex-col md:flex-row">
-          <CurrencySelection color="white" heading="SEND" image="/flags/us.webp" CurrencyName="USD"/>
-          <div className="w-[48px] h-[48px] flex justify-center items-center bg-[#202022] rounded-[8px] cursor-pointer shrink-0 border border-[#3D3D3D]">
+          <CurrencySelection
+            color="white"
+            heading="SEND"
+            selectedCurrency={fromCurrency}
+            setSelectedCurrency={setFromCurrency}
+            conversionInput={amount}
+            setConversionInput={setAmount}
+            readOnly={false}
+          />
+
+          <div
+            className="w-[48px] h-[48px] flex justify-center items-center bg-[#202022] rounded-[8px] cursor-pointer shrink-0 border border-[#3D3D3D]"
+            onClick={handleSwaping}
+          >
             <svg
               width="20"
               height="18"
@@ -25,10 +76,18 @@ export function ConverterSection() {
               />
             </svg>
           </div>
-          <CurrencySelection color="#CEF739" heading="RECEIVE" image="/flags/eu.webp" CurrencyName="EUR"/>
+          <CurrencySelection
+            color="#CEF739"
+            heading="RECEIVE"
+            selectedCurrency={toCurrency}
+            setSelectedCurrency={setToCurrency}
+            conversionInput={convertedAmount}
+            setConversionInput={setConvertedAmount}
+            readOnly={true}
+          />
         </div>
         <div className="px-[20px] py-[16px] flex flex-col md:flex-row gap-3 md:justify-between justify-center items-center border-dashed border-t border-[#2E2E2E]">
-          <p className="text-[12px] text-white">1 USD = 0.8530 EUR</p>
+          <p className="text-[12px] text-white">1 {fromCurrency} = {rate?.toLocaleString()} {toCurrency}</p>
           <div className="gap-[12px] flex items-center">
             <Button
               icon={
@@ -46,9 +105,9 @@ export function ConverterSection() {
                 </svg>
               }
               text="FAVORITED"
-              variant = 'primary'
+              variant="primary"
             />
-            <Button text="LOG CONVERSION" variant='secondary' />
+            <Button text="LOG CONVERSION" variant="secondary" />
           </div>
         </div>
       </div>

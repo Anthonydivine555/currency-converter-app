@@ -1,0 +1,15 @@
+import { MagnifyingGlassIcon } from "@phosphor-icons/react";
+
+export function CurrencySearch({ currencySearch, setCurrencySearch }) {
+  return (
+    <div className="search-container w-full flex p-[12px] border border-[#9D9D9D] flex gap-[10px] rounded-[6px]">
+      <MagnifyingGlassIcon size={14} color="white" />
+      <input
+        className="text-[#9D9D9D] text-[10px] md:text-xs flex-1 h-full outline-none"
+        placeholder="Search currencies..."
+        value={currencySearch}
+        onChange={(e) => setCurrencySearch(e.target.value)}
+      />
+    </div>
+  );
+}

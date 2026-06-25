@@ -3,6 +3,7 @@ export function DesktopTab({ activeTab, setActiveTab, tabs }) {
     <div className="md:flex gap-[8px] w-full border-b border-[#202022] hidden">
       {tabs.map((tab) => (
         <button
+          key={tab}
           onClick={() => setActiveTab(tab)}
           className={`py-2 px-5 text-white text-sm md:text-base flex items-center space-x-2 border-b-2 transition-colors ${
             activeTab === tab
