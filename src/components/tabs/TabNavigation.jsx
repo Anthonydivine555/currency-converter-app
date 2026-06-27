@@ -6,14 +6,13 @@ import {TabHeader} from './TabHeader'
 import { useState } from "react";
 
 
-export function TabNavigation() {
+export function TabNavigation({favorites, favoriteRates, handleToggleFavorite}) {
   const [activeTab, setActiveTab] = useState("HISTORY");
-  const [isOpen, setIsOpen] = useState(false);
   return(
     <div className='flex w-full flex-col gap-[20px]'>
-      <TabHeader activeTab={activeTab} setActiveTab={setActiveTab} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <TabHeader activeTab={activeTab} setActiveTab={setActiveTab} favorites={favorites}/>
       {activeTab === "HISTORY" && <HistoryTab/>}
-      {activeTab === "FAVOURITE" && <FavouriteTab/>}
+      {activeTab === "FAVOURITE" && <FavouriteTab favorites={favorites} favoriteRates={favoriteRates} handleToggleFavorite={handleToggleFavorite}/>}
       {activeTab === "COMPARE" && <CompareTab/>}
       {activeTab === "LOG" && <LogTab/>}
     </div>

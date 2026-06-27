@@ -1,9 +1,9 @@
 
 
-export function ConversionPair() {
+export function ConversionPair({fromCurrency, toCurrency}) {
   return (
     <div className="flex-1 flex gap-[8px] items-center">
-      <span className="text-xs md:text-sm text-white">USD</span>
+      <span className="text-xs md:text-sm text-white">{fromCurrency}</span>
       <svg
         width="11"
         height="11"
@@ -17,7 +17,7 @@ export function ConversionPair() {
         />
       </svg>
 
-      <span className="text-xs md:text-sm text-white">EUR</span>
+      <span className="text-xs md:text-sm text-white">{toCurrency}</span>
     </div>
   );
 }

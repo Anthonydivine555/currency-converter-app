@@ -1,15 +1,14 @@
 import { Button } from "./Button";
 import { CurrencySelection } from "./CurrencySelection";
 import { useState, useEffect } from "react";
+import {ActiveFavouriteBtn} from '../../utils/ActiveFavouriteBtn'
 import axios from "axios";
 
-export function ConverterSection() {
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
+export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFavorite, favorites, setFavorites, setFromCurrency, setToCurrency, setRate}) {
   const [amount, setAmount] = useState(1);
   const [convertedAmount, setConvertedAmount] = useState("");
-  const [rate, setRate] = useState(null);
-
+  
+  const isFavorite = ActiveFavouriteBtn(favorites, fromCurrency, toCurrency)
   
   const convertCurrency = async () => {
      try {
@@ -20,7 +19,7 @@ export function ConverterSection() {
     const exchangeRate = response.data.rate;
 
     setRate(exchangeRate)
-    
+
     setConvertedAmount((amount * exchangeRate).toFixed(2));
   } catch (error) {
     console.error(error);
@@ -95,17 +94,19 @@ export function ConverterSection() {
                   width="13"
                   height="12"
                   viewBox="0 0 13 12"
-                  fill="none"
+                  fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M5.59811 0.413133C5.87936 -0.149367 6.67623 -0.12593 6.93404 0.413133L8.48092 3.53032L11.9028 4.02251C12.5122 4.11626 12.7465 4.86626 12.3012 5.31157L9.84029 7.72563L10.4262 11.1241C10.52 11.7334 9.86373 12.2022 9.32467 11.9209L6.27779 10.3038L3.20748 11.9209C2.66842 12.2022 2.01217 11.7334 2.10592 11.1241L2.69186 7.72563L0.230918 5.31157C-0.214394 4.86626 0.0199805 4.11626 0.629356 4.02251L4.07467 3.53032L5.59811 0.413133Z"
-                    fill="#0A0A0A"
+                    fill="currentColor"
                   />
                 </svg>
               }
               text="FAVORITED"
               variant="primary"
+              onClick={() => handleToggleFavorite(fromCurrency, toCurrency)}
+              isFavorite={isFavorite}
             />
             <Button text="LOG CONVERSION" variant="secondary" />
           </div>

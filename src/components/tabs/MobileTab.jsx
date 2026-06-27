@@ -1,13 +1,15 @@
 // import {TabButton} from 'TabButtons'
 import { CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
+import {useState} from 'react'
 
 export function MobileTab({
   activeTab,
   setActiveTab,
-  isOpen,
-  setIsOpen,
   tabs,
+  favorites
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="relative md:hidden w-full">
       <button
@@ -48,7 +50,7 @@ export function MobileTab({
 
             {(tab === "LOG" || tab === "FAVOURITE") && (
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#283300] text-[#CEF739] text-xs">
-                10
+                {tab === 'LOG' ? '10' : favorites.length}
               </span>
             )}
           </button>

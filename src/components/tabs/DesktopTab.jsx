@@ -1,4 +1,4 @@
-export function DesktopTab({ activeTab, setActiveTab, tabs }) {
+export function DesktopTab({ activeTab, setActiveTab, tabs, favorites }) {
   return (
     <div className="md:flex gap-[8px] w-full border-b border-[#202022] hidden">
       {tabs.map((tab) => (
@@ -16,7 +16,7 @@ export function DesktopTab({ activeTab, setActiveTab, tabs }) {
           { 
             (tab === "LOG" || tab === "FAVOURITE")  && (
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#283300] text-[#CEF739] text-xs">
-                10
+                {tab === 'LOG' ? '10' : favorites.length}
               </span>
             )}
         </button>
