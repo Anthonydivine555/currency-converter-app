@@ -4,10 +4,8 @@ import { useState, useEffect } from "react";
 import {ActiveFavouriteBtn} from '../../utils/ActiveFavouriteBtn'
 import axios from "axios";
 
-export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFavorite, favorites, setFavorites, setFromCurrency, setToCurrency, setRate}) {
-  const [amount, setAmount] = useState(1);
-  const [convertedAmount, setConvertedAmount] = useState("");
-  
+export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFavorite, favorites, setFavorites, setFromCurrency, setToCurrency, setRate, convertedAmount, setConvertedAmount, amount, setAmount, handleLogConversion}) {
+
   const isFavorite = ActiveFavouriteBtn(favorites, fromCurrency, toCurrency)
   
   const convertCurrency = async () => {
@@ -21,6 +19,7 @@ export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFa
     setRate(exchangeRate)
 
     setConvertedAmount((amount * exchangeRate).toFixed(2));
+    
   } catch (error) {
     console.error(error);
   }     
@@ -108,7 +107,7 @@ export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFa
               onClick={() => handleToggleFavorite(fromCurrency, toCurrency)}
               isFavorite={isFavorite}
             />
-            <Button text="LOG CONVERSION" variant="secondary" />
+            <Button text="LOG CONVERSION" variant="secondary" onClick={handleLogConversion}/>
           </div>
         </div>
       </div>

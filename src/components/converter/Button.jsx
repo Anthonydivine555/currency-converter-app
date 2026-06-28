@@ -8,7 +8,7 @@ export function Button({icon, text, variant, onClick, isFavorite}) {
   }`,
 
   secondary:
-    "bg-[#202022] text-[#9D9D9D] hover:border-[#CEF739] border-[#454547] hover:bg-[#CEF739] hover:text-black transform active:scale-95",
+    "bg-[#202022] text-[#9D9D9D] hover:border-[#CEF739] hover:text-white border-[#454547] hover:bg-[#283300] hover:text-black transform active:scale-95",
 };
   return (
     <button

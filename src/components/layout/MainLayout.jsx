@@ -3,7 +3,6 @@ import {LiveMarketTicker} from '../markets/LiveMarketTicker'
 import {ConverterSection} from '../converter/ConverterSection'
 import {TabNavigation} from '../tabs/TabNavigation'
 import {useState, useEffect} from 'react'
-import {handleToggleFavorite} from '../../utils/handleToggleFavorite'
 import axios from 'axios'
 
 export function MainLayout() {
@@ -22,12 +21,34 @@ export function MainLayout() {
     return savedRates ? JSON.parse(savedRates) : {};
   });
 
-  const favoriteList = favorites.map((favorite) => ({
-    ...favorite,
-    ...favoriteRates[favorite.id],
-  }));
+  const [amount, setAmount] = useState(1);
+  const [convertedAmount, setConvertedAmount] = useState("");
 
-  console.log(favoriteList)
+  const [logs, setLogs] = useState(() => {
+
+    const savedlogs = localStorage.getItem("logs");
+
+    return savedlogs ? JSON.parse(savedlogs) : [
+      {
+        id: "1",
+        timestamp: Date.now(), 
+        fromCurrency: "USD",
+        toCurrency: "NGN",
+        fromAmount: 100,
+        toAmount: 154723.56,
+        rate: 1547.2356
+      },
+      {
+        id: "2",
+        timestamp: Date.now(), 
+        fromCurrency: "EUR",
+        toCurrency: "GBP",
+        fromAmount: 250,
+        toAmount: 216.48,
+        rate: 1547.2356
+      }
+    ]}
+  );
 
 
   function getDateString(daysAgo = 0) {
@@ -35,6 +56,8 @@ export function MainLayout() {
     date.setDate(date.getDate() - daysAgo);
     return date.toISOString().split("T")[0];
   }
+
+
 
   function handleToggleFavorite(from, to) {
 
@@ -53,18 +76,32 @@ export function MainLayout() {
       }
 
       return [
-        ...prevFavorites,
         {
           id,
           fromCurrency: from,
           toCurrency: to
         },
+        ...prevFavorites
       ];
-    });
-    
-  } 
+    });    
+  }
 
-  async function refreshFavoriteRates() {
+  function handleLogConversion() {
+    const newLog = {
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      fromCurrency,
+      toCurrency,
+      fromAmount: amount,
+      toAmount: convertedAmount,
+      rate
+    };
+
+    setLogs((prev) => [newLog, ...prev]);
+  }
+
+
+async function refreshFavoriteRates() {
 
   const updated = {};
 
@@ -80,6 +117,7 @@ export function MainLayout() {
     )
 
     const rate = today.data.rate;
+
     const oldRate = yesterday.data.rate;
 
     const change = ((rate - oldRate) / oldRate) * 100;
@@ -105,6 +143,7 @@ useEffect(() => {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 }, [favorites]);
 
+
 useEffect(() => {
   localStorage.setItem(
     "favoriteRates",
@@ -113,13 +152,25 @@ useEffect(() => {
 }, [favoriteRates]);
 
 
+useEffect(() => {
+  localStorage.setItem(
+    "logs",
+    JSON.stringify(logs)
+  );
+}, [logs]);
+
+
   return (
     <div className='min-h-screen'>
       <Header/>
+
       <LiveMarketTicker />
+
       <main className='max-w-5xl w-[95%] mx-auto py-[48px]'>
-        <ConverterSection favorites={favorites} handleToggleFavorite={handleToggleFavorite} setFavorites={setFavorites} fromCurrency={fromCurrency} toCurrency={toCurrency} rate={rate} setFromCurrency={setFromCurrency} setToCurrency={setToCurrency} setRate={setRate}/>
-        <TabNavigation favorites={favorites} favoriteRates={favoriteRates} handleToggleFavorite={handleToggleFavorite}/>
+
+        <ConverterSection favorites={favorites} handleToggleFavorite={handleToggleFavorite} setFavorites={setFavorites} fromCurrency={fromCurrency} toCurrency={toCurrency} rate={rate} setFromCurrency={setFromCurrency} setToCurrency={setToCurrency} setRate={setRate} amount={amount} setAmount={setAmount} convertedAmount={convertedAmount} setConvertedAmount={setConvertedAmount} handleLogConversion={handleLogConversion}/>
+
+        <TabNavigation favorites={favorites} favoriteRates={favoriteRates} handleToggleFavorite={handleToggleFavorite} logs={logs} setLogs={setLogs}/>
       </main>
     </div>
   )

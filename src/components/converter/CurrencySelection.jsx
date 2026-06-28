@@ -23,10 +23,9 @@ export function CurrencySelection({
       <div className="flex gap-3 items-center">
         <ConvertInput
           value={conversionInput}
-          onChange={(event) => {
-            setConversionInput(event.target.value);
-            console.log(event.target.value);
-          }}
+          onChange={(event) => 
+            setConversionInput(event.target.value)
+          }
           color={color}
           readOnly={readOnly}
           conversionInput={conversionInput}
