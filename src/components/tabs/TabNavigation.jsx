@@ -34,6 +34,8 @@ export function TabNavigation({
         );
 
         setCompareData(response.data);
+
+
       } catch (err) {
         console.error(err);
         setError("Failed to fetch comparison data.");
@@ -43,6 +45,7 @@ export function TabNavigation({
     }
 
     fetchCompareData()
+
 
   }, [fromCurrency]);
 

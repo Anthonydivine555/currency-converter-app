@@ -36,7 +36,7 @@ export function MobileTab({
       </button>
 
       <div
-        className={`overflow-hidden absolute top-full mt-2 w-full rounded-[10px] border bg-[#171719] transition-all duration-300 ease ${
+        className={`overflow-hidden absolute top-full py-4 mt-2 w-full rounded-[10px] border bg-[#171719] transition-all duration-300 ease ${
           isOpen
             ? "opacity-100 translate-y-0 max-h-60"
             : "opacity-0 -translate-y-2 max-h-0"

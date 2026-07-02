@@ -22,22 +22,35 @@ export function CompareTab({compareData, loading, error, handleToggleFavorite, f
     return <p className='text-center p-20'>{error}</p>
   }
 
-  const renderCompareCurrencies = compareCurrencies.map((currency) => {
+
+const renderCompareCurrencies = compareCurrencies.map((currency) => {
+  // Base currency
+  if (currency.code === fromCurrency) {
+    return {
+      ...currency,
+      base: fromCurrency,
+      quote: fromCurrency,
+      rate: 1,
+    };
+  }
 
   const currencyRate = compareData.find(
     (item) => item.quote === currency.code
   );
 
+  if (!currencyRate) return null;
+
   return {
     ...currency,
-    ...currencyRate
+    ...currencyRate,
   };
-});
+}).filter(Boolean);
+
 
 
  return(
   <TabContainer>
-    <div className="flex justify-between gap-3 items-center flex-wrap">
+    <div className="flex justify-between gap-[10px] items-center flex-wrap">
       <div className='space-x-2' >
         <span className='text-xs md:text-sm text-[#9D9D9D]'>MULTI-CURRENCY</span>
         <span className="text-white text-sm md:text-base">{amount} FROM {fromCurrency}</span>

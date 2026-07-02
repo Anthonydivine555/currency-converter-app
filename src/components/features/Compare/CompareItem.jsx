@@ -3,6 +3,7 @@ import { StarIcon } from "@phosphor-icons/react";
 import { ActiveFavouriteBtn } from "../../../utils/ActiveFavouriteBtn";
 
 export function CompareItem({ currency, handleToggleFavorite, favorites, amount }) {
+  
   const flagCode = currency.quote.slice(0, 2).toLowerCase();
 
   const thousands = (currency.rate * amount).toFixed(2);

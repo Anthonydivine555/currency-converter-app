@@ -107,6 +107,7 @@ export function MainLayout() {
     if (favorites.length === 0) return;
 
     refreshFavoriteRates();
+
   }, [favorites]);
 
   useEffect(() => {
@@ -127,7 +128,7 @@ export function MainLayout() {
 
       <LiveMarketTicker />
 
-      <main className="max-w-5xl w-[95%] mx-auto py-[48px]">
+      <main className="max-w-5xl w-[95%] mx-auto py-[48px] flex flex-col gap-[40px] md:gap-[32px]">
         <ConverterSection
           favorites={favorites}
           handleToggleFavorite={handleToggleFavorite}
