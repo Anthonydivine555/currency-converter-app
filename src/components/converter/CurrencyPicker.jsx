@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { CurrencyButton } from "./CurrencyButton";
 import { CurrencySearch } from "./CurrencySearch";
 
+
 export function CurrencyPicker({
   isOpen,
   setIsOpen,
@@ -15,6 +16,7 @@ export function CurrencyPicker({
 
   useEffect(() => {
     const fetchCurrencies = async () => {
+
       setLoading(true);
 
       try {

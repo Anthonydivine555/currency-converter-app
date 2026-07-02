@@ -6,10 +6,17 @@ export function MobileTab({
   activeTab,
   setActiveTab,
   tabs,
-  favorites
+  favorites,
+  logs
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  function handleTabChange(tab) {
+      
+      setActiveTab(tab);
+
+      setIsOpen(false)
+    }
   return (
     <div className="relative md:hidden w-full">
       <button
@@ -38,10 +45,7 @@ export function MobileTab({
         {tabs.map((tab) => (
           <button
             key={tab}
-            onClick={() => {
-              setActiveTab(tab);
-              setIsOpen(false);
-            }}
+            onClick={() => handleTabChange(tab)}
             className={`py-2 px-5 text-sm md:text-base flex w-full items-center space-x-2  transition-colors ${
               activeTab === tab ? " bg-[#CEF739] " : " text-white"
             }`}
@@ -50,7 +54,7 @@ export function MobileTab({
 
             {(tab === "LOG" || tab === "FAVOURITE") && (
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#283300] text-[#CEF739] text-xs">
-                {tab === 'LOG' ? '10' : favorites.length}
+                {tab === 'LOG' ? logs.length : favorites.length}
               </span>
             )}
           </button>

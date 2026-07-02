@@ -25,7 +25,7 @@ export function LogTab({logs, setLogs}) {
       />
     ) : (
       <TabContainer>
-        <div className="flex justify-between items-center max-md:flex-col gap[10px]">
+        <div className="flex justify-between items-center max-md:flex-col gap[10px] w-full">
           <h3 className="text-white text-sm md:text-base font-meduim flex-1">
             CONVERSION LOG
           </h3>

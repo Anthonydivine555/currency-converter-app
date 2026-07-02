@@ -2,7 +2,6 @@
 
 export function ConvertInput({
   color,
-  conversionInput,
   onChange,
   value,
   readOnly
@@ -10,7 +9,7 @@ export function ConvertInput({
   return (
     <input
       type="number"
-      className={`text-[32px] md:text-[40px] flex-1 min-w-0 outline-0`}
+      className={`text-[32px] md:text-[40px] flex-1 min-w-0 outline-0 hide-scrollbar`}
       value={value}
       onChange={onChange}
       style={{ color: color }}

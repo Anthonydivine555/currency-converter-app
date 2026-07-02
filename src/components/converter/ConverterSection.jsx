@@ -1,28 +1,45 @@
 import { Button } from "./Button";
 import { CurrencySelection } from "./CurrencySelection";
-import { useState, useEffect } from "react";
-import {ActiveFavouriteBtn} from '../../utils/ActiveFavouriteBtn'
+import { useEffect, useState, useRef } from "react";
+import { ActiveFavouriteBtn } from "../../utils/ActiveFavouriteBtn";
+import { CheckIcon } from "@phosphor-icons/react";
 import axios from "axios";
 
-export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFavorite, favorites, setFavorites, setFromCurrency, setToCurrency, setRate, convertedAmount, setConvertedAmount, amount, setAmount, handleLogConversion}) {
+export function ConverterSection({
+  fromCurrency,
+  toCurrency,
+  rate,
+  handleToggleFavorite,
+  favorites,
+  setFromCurrency,
+  setToCurrency,
+  setRate,
+  convertedAmount,
+  setConvertedAmount,
+  amount,
+  setAmount,
+  setLogs,
+}) {
+  const [isLogged, setIsLogged] = useState(false);
 
-  const isFavorite = ActiveFavouriteBtn(favorites, fromCurrency, toCurrency)
-  
+  const timeoutRef = useRef(null);
+
+  const isFavorite = ActiveFavouriteBtn(favorites, fromCurrency, toCurrency);
+
   const convertCurrency = async () => {
-     try {
-    const response = await axios.get(
-      `https://api.frankfurter.dev/v2/rate/${fromCurrency}/${toCurrency}`
-    );
+    try {
+      const response = await axios.get(
+        `https://api.frankfurter.dev/v2/rate/${fromCurrency}/${toCurrency}`,
+      );
 
-    const exchangeRate = response.data.rate;
+      const exchangeRate = response.data.rate;
 
-    setRate(exchangeRate)
+      setRate(exchangeRate);
 
-    setConvertedAmount((amount * exchangeRate).toFixed(2));
-    
-  } catch (error) {
-    console.error(error);
-  }     
+      setConvertedAmount((amount * exchangeRate).toFixed(2));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -36,11 +53,35 @@ export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFa
   function handleSwaping() {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
-    convertCurrency()
+    convertCurrency();
+  }
+
+  function handleLogConversion() {
+
+    const newLog = {
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      fromCurrency,
+      toCurrency,
+      fromAmount: amount,
+      toAmount: convertedAmount,
+      rate
+    };
+
+    setLogs((prev) => [newLog, ...prev]);
+
+    setIsLogged(true);
+
+    clearTimeout(timeoutRef.current);
+
+    // Start a new timeout
+    timeoutRef.current = setTimeout(() => {
+      setIsLogged(false);
+    }, 2000);
   }
 
   return (
-    <div className="converter-wrapper flex flex-col gap-[16px] w-full mb-10">
+    <div className="converter-wrapper flex flex-col gap-[36px] w-full mb-30">
       <h1 className="text-lg md:text-xl mb-4 text-white">CHECK THE RATE</h1>
       <div className="block bg-[#171719] rounded-[20px]">
         <div className="w-full top-container p-[20px] flex gap-[24px] items-center justify-between box-border flex-col md:flex-row">
@@ -85,7 +126,9 @@ export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFa
           />
         </div>
         <div className="px-[20px] py-[16px] flex flex-col md:flex-row gap-3 md:justify-between justify-center items-center border-dashed border-t border-[#2E2E2E]">
-          <p className="text-[12px] text-white">1 {fromCurrency} = {rate?.toLocaleString()} {toCurrency}</p>
+          <p className="text-[12px] text-white">
+            1 {fromCurrency} = {rate?.toLocaleString()} {toCurrency}
+          </p>
           <div className="gap-[12px] flex items-center">
             <Button
               icon={
@@ -107,7 +150,13 @@ export function ConverterSection({fromCurrency, toCurrency, rate, handleToggleFa
               onClick={() => handleToggleFavorite(fromCurrency, toCurrency)}
               isFavorite={isFavorite}
             />
-            <Button text="LOG CONVERSION" variant="secondary" onClick={handleLogConversion}/>
+            <Button
+              text={isLogged ? 'LOGGED': "LOG CONVERSION"}
+              variant="secondary"
+              onClick={handleLogConversion}
+              icon={isLogged? <CheckIcon size={13} color="black" /> : null}
+              isLogged={isLogged}
+            />
           </div>
         </div>
       </div>

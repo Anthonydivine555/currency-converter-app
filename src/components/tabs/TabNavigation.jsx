@@ -1,25 +1,83 @@
-import {LogTab} from '../features/Log/LogTab'
-import {HistoryTab} from '../features/History/HistoryTab'
-import {FavouriteTab} from '../features/Favourites/FavouriteTab'
-import {CompareTab} from '../features/Compare/CompareTab'
-import {TabHeader} from './TabHeader'
-import { useState } from "react";
+import { LogTab } from "../features/Log/LogTab";
+import { HistoryTab } from "../features/History/HistoryTab";
+import { FavouriteTab } from "../features/Favourites/FavouriteTab";
+import { CompareTab } from "../features/Compare/CompareTab";
+import { TabHeader } from "./TabHeader";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-
-export function TabNavigation({favorites, favoriteRates, handleToggleFavorite, amount, convertedAmount, fromCurrency, toCurrency, logs, setLogs}) {
+export function TabNavigation({
+  favorites,
+  favoriteRates,
+  handleToggleFavorite,
+  logs,
+  setLogs,
+  amount,
+  fromCurrency,
+}) {
   const [activeTab, setActiveTab] = useState("HISTORY");
-  return(
-    <div className='flex w-full flex-col gap-[20px]'>
+  const [compareData, setCompareData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-      <TabHeader activeTab={activeTab} setActiveTab={setActiveTab} favorites={favorites}/>
+  useEffect(() => {
 
-      {activeTab === "HISTORY" && <HistoryTab/>}
+    async function fetchCompareData() {
 
-      {activeTab === "FAVOURITE" && <FavouriteTab favorites={favorites} favoriteRates={favoriteRates} handleToggleFavorite={handleToggleFavorite}/>}
+      setLoading(true);
 
-      {activeTab === "COMPARE" && <CompareTab/>}
+      setError(null);
 
-      {activeTab === "LOG" && <LogTab logs={logs} setLogs={setLogs}/>}
+      try {
+        const response = await axios.get(
+          `https://api.frankfurter.dev/v2/rates?base=${fromCurrency}&quotes=EUR,GBP,JPY,CHF,CAD,AUD,INR,CNY,BDT`,
+        );
+
+        setCompareData(response.data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch comparison data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCompareData()
+
+  }, [fromCurrency]);
+
+  return (
+    <div className="flex w-full flex-col gap-[20px]">
+      <TabHeader
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        favorites={favorites}
+        logs={logs}
+      />
+
+      {activeTab === "HISTORY" && <HistoryTab />}
+
+      {activeTab === "FAVOURITE" && (
+        <FavouriteTab
+          favorites={favorites}
+          favoriteRates={favoriteRates}
+          handleToggleFavorite={handleToggleFavorite}
+        />
+      )}
+
+      {activeTab === "COMPARE" && (
+        <CompareTab
+          compareData={compareData}
+          loading={loading}
+          error={error}
+          handleToggleFavorite={handleToggleFavorite}
+          favorites={favorites}
+          amount={amount}
+          fromCurrency={fromCurrency}
+        />
+      )}
+
+      {activeTab === "LOG" && <LogTab logs={logs} setLogs={setLogs} />}
     </div>
-  )
+  );
 }
