@@ -8,12 +8,16 @@ export function LogItem({ log, handleDeleteLog }) {
 
   return (
     <TabItemContainer>
-      <span className="text-xs md:text-sm text-[#9D9D9D]">{timeInterval}</span>
-      <ConversionPair
-        fromCurrency={log.fromCurrency}
-        toCurrency={log.toCurrency}
-      />
-      <div className="flex gap-[20px]">
+      <div className="flex-1 flex gap-[8px] max-sm:flex-col">
+        <span className="text-xs md:text-sm text-[#9D9D9D]">
+          {timeInterval}
+        </span>
+        <ConversionPair
+          fromCurrency={log.fromCurrency}
+          toCurrency={log.toCurrency}
+        />
+      </div>
+      <div className="flex gap-[8px] max-sm:flex-col">
         <span className="text-[#C6C6C6] text-sm md:text-base">
           {log.fromAmount}
         </span>

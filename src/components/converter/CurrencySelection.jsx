@@ -18,7 +18,7 @@ export function CurrencySelection({
   const selectedFlag = selectedCurrency.slice(0, 2).toLowerCase();
 
   return (
-    <div className="p-[20px] bg-[#202022] rounded-2xl flex flex-col gap-[20px] w-full md:w-[40%] border border-[#2E2E2E]">
+    <div className="p-[20px] bg-[#202022] rounded-2xl flex flex-col gap-[20px] w-full md:w-[40%] border border-[#2E2E2E] max-sm:relative">
       <h1 className="text-[#C6C6C6] text-xs md:text-xs">{heading}</h1>
       <div className="flex gap-3 items-center">
         <ConvertInput
@@ -31,7 +31,7 @@ export function CurrencySelection({
           conversionInput={conversionInput}
         />
 
-        <div className="bg-[#2E2E2E] border border-[#3D3D3D] rounded-lg relative cursor-pointer">
+        <div className="bg-[#2E2E2E] border border-[#3D3D3D] rounded-lg sm:relative cursor-pointer">
           <div
             className="flex gap-[8px] items-center p-[10px]"
             onClick={() => setIsOpen(!isOpen)}

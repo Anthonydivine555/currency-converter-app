@@ -14,6 +14,7 @@ export function TabNavigation({
   setLogs,
   amount,
   fromCurrency,
+  toCurrency
 }) {
   const [activeTab, setActiveTab] = useState("HISTORY");
   const [compareData, setCompareData] = useState([]);
@@ -58,7 +59,7 @@ export function TabNavigation({
         logs={logs}
       />
 
-      {activeTab === "HISTORY" && <HistoryTab />}
+      {activeTab === "HISTORY" && <HistoryTab toCurrency={toCurrency} fromCurrency={fromCurrency}/>}
 
       {activeTab === "FAVOURITE" && (
         <FavouriteTab

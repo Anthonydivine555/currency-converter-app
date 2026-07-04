@@ -57,7 +57,7 @@ export function CurrencyPicker({
   return (
     <div
       className={`absolute z-50 right-0 top-full mt-2 transition-all duration-300 w-[376px]
-        max-w-[90vw] bg-[#202022] border border-[#3D3D3D] p-[8px] space-y-2 rounded-lg
+        max-sm:w-full bg-[#202022] border border-[#3D3D3D] p-[8px] space-y-2 rounded-lg
         ${isOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"} 
         `}>
       <CurrencySearch

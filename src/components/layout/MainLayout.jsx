@@ -154,6 +154,7 @@ export function MainLayout() {
           setLogs={setLogs}
           amount={amount}
           fromCurrency={fromCurrency}
+          toCurrency={toCurrency}
         />
       </main>
     </div>

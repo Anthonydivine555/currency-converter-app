@@ -97,6 +97,7 @@ export function LiveMarketTicker() {
       </div>
 
       <div className="flex-1 bg-[#171719] overflow-x-auto text-center hide-scrollbar">
+        
         {loading && <p className="text-white text-sm pt-2">Loading...</p>}
 
         {error && <p className="text-white text-sm">{error}</p>}
