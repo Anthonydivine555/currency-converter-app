@@ -7,11 +7,11 @@ import { getHistoryDateRange } from "../../../utils/getHistoryDateRange";
 
 export function HistoryTab({ fromCurrency, toCurrency }) {
   const [historyData, setHistoryData] = useState([]);
-  const [period, setPeriod] = useState("1D");
+  const [period, setPeriod] = useState("1M");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(historyData)
+
 
   useEffect(() => {
     if (!fromCurrency || !toCurrency) return;
@@ -48,6 +48,29 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
 
     fetchHistoryData();
   }, [fromCurrency, toCurrency, period]);
+
+  useEffect(() => {
+  const handleKeyDown = (e) => {
+    const tag = document.activeElement.tagName;
+
+    // ignore typing
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+    const key = e.key.toLowerCase();
+
+    if (e.altKey && key === "1") setPeriod("1D");
+    if (e.altKey && key === "2") setPeriod("1W");
+    if (e.altKey && key === "3") setPeriod("1M");
+    if (e.altKey && key === "4") setPeriod("3M");
+    if (e.altKey && key === "5") setPeriod("1Y");
+    if (e.altKey && key === "6") setPeriod("5Y");
+  
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => window.removeEventListener("keydown", handleKeyDown);
+}, []);
 
   if (loading) {
     return <p className="text-center p-20 text-sm text-white">Loading...</p>;
@@ -117,7 +140,7 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
         </div>
         <PeriodStats period={period} setPeriod={setPeriod} />
       </div>
-      <ChartContainer period={period} fromCurrency={fromCurrency} toCurrency={toCurrency}  historyData={historyData} />
+      <ChartContainer period={period} fromCurrency={fromCurrency} toCurrency={toCurrency}  historyData={historyData} tabIndex={-1} />
     </div>
   );
 }

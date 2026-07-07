@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { Button } from "./button";
 import { CurrencySelection } from "./CurrencySelection";
 import { useEffect, useState, useRef } from "react";
 import { ActiveFavouriteBtn } from "../../utils/ActiveFavouriteBtn";
@@ -50,14 +50,12 @@ export function ConverterSection({
     convertCurrency();
   }, [amount, fromCurrency, toCurrency]);
 
-
   function handleSwaping() {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
   }
 
   function handleLogConversion() {
-
     const newLog = {
       id: crypto.randomUUID(),
       timestamp: Date.now(),
@@ -65,7 +63,7 @@ export function ConverterSection({
       toCurrency,
       fromAmount: amount,
       toAmount: convertedAmount,
-      rate
+      rate,
     };
 
     setLogs((prev) => [newLog, ...prev]);
@@ -80,6 +78,24 @@ export function ConverterSection({
     }, 2000);
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const tag = document.activeElement.tagName;
+
+      // ignore typing
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+      if (e.altKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        handleSwaping();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [fromCurrency, toCurrency]);
+
   return (
     <div className="converter-wrapper flex flex-col gap-[36px] w-full">
       <h1 className="text-lg md:text-xl mb-4 text-white">CHECK THE RATE</h1>
@@ -93,10 +109,12 @@ export function ConverterSection({
             conversionInput={amount}
             setConversionInput={setAmount}
             readOnly={false}
+            handleSwaping={handleSwaping}
           />
 
-          <div
-            className="w-[48px] h-[48px] flex justify-center items-center bg-[#202022] rounded-[8px] cursor-pointer shrink-0 border border-[#3D3D3D]"
+          <button
+            className="w-[48px] h-[48px] flex justify-center items-center bg-[#202022] rounded-[8px] cursor-pointer shrink-0 border border-[#3D3D3D] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CEF739] focus-visible:ring-offset-2 
+            focus-visible:ring-offset-[#0A0A0A]"
             onClick={handleSwaping}
           >
             <svg
@@ -114,7 +132,7 @@ export function ConverterSection({
                 strokeLinejoin="round"
               />
             </svg>
-          </div>
+          </button>
           <CurrencySelection
             color="#CEF739"
             heading="RECEIVE"
@@ -123,6 +141,7 @@ export function ConverterSection({
             conversionInput={convertedAmount}
             setConversionInput={setConvertedAmount}
             readOnly={true}
+            handleSwaping={handleSwaping}
           />
         </div>
         <div className="px-[20px] py-[16px] flex flex-col md:flex-row gap-3 md:justify-between justify-center items-center border-dashed border-t border-[#2E2E2E]">
@@ -151,10 +170,10 @@ export function ConverterSection({
               isFavorite={isFavorite}
             />
             <Button
-              text={isLogged ? 'LOGGED': "LOG CONVERSION"}
+              text={isLogged ? "LOGGED" : "LOG CONVERSION"}
               variant="secondary"
               onClick={handleLogConversion}
-              icon={isLogged? <CheckIcon size={13} color="black" /> : null}
+              icon={isLogged ? <CheckIcon size={13} color="black" /> : null}
               isLogged={isLogged}
             />
           </div>

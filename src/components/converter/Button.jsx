@@ -1,24 +1,27 @@
+export function Button({ icon, text, variant, onClick, isFavorite, isLogged }) {
+  const base =
+    "rounded-lg flex gap-2 w-[132px] h-[32px] justify-center items-center transition-all duration-300 ease border cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CEF739] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] active:scale-95";
 
-
-export function Button({icon, text, variant, onClick, isFavorite, isLogged}) {
-  
   const variants = {
-  primary: `bg-[#202022] border-[#454547] hover:border-[#CEF739] hover:text-black text-[#9D9D9D] hover:bg-[#CEF739] transform hover:opacity-90 active:scale-95 ${
-    isFavorite ? "text-black bg-[#CEF739] border-[#CEF739]" : ""
-  }`,
+    primary:
+      "bg-[#202022] border-[#454547] text-[#9D9D9D] hover:bg-[#CEF739] hover:text-black hover:border-[#CEF739]",
+    secondary:
+      "bg-[#202022] border-[#454547] text-[#9D9D9D] hover:bg-[#283300] hover:text-white hover:border-[#CEF739]",
+  };
 
-  secondary:
-     `${isLogged ? "bg-[#CEF739] text-black"   : " hover:border-[#CEF739] bg-[#202022] text-[#9D9D9D] hover:text-white border-[#454547] hover:bg-[#283300]"}  transform active:scale-95`
-};
+  const favoriteStyles = isFavorite
+    ? "bg-[#CEF739] text-black"
+    : "";
+
+  const loggedStyles = isLogged ? "bg-[#CEF739] text-black" : "";
+
   return (
     <button
-      type="submit"
-      className={`rounded-[8px] flex gap-2 w-[132px] h-[32px] justify-center items-center transition-all duration-300 ease border cursor-pointer ${variants[variant]}`}
+      type="button"
+      className={`${base} ${variants[variant]} ${favoriteStyles} ${loggedStyles}`}
       onClick={onClick}
     >
-    
-        <span className="shrink-0">{icon}</span>
-      
+      <span className="shrink-0">{icon}</span>
 
       <span className={`font-medium text-xs`}>{text}</span>
     </button>

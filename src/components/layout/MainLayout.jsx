@@ -5,10 +5,16 @@ import { ConverterSection } from "../converter/ConverterSection";
 import { TabNavigation } from "../tabs/TabNavigation";
 import { getDateString } from "../../utils/dateString.js";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export function MainLayout() {
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
+  const [searchParams] = useSearchParams();
+
+  const from = searchParams.get("from") || "USD";
+  const to = searchParams.get("to") || "EUR";
+
+  const [fromCurrency, setFromCurrency] = useState(from);
+  const [toCurrency, setToCurrency] = useState(to);
   const [rate, setRate] = useState(null);
 
   const [favorites, setFavorites] = useState(() => {
@@ -53,7 +59,6 @@ export function MainLayout() {
   });
 
   function handleToggleFavorite(from, to) {
-
     const id = `${from}-${to}`;
 
     setFavorites((prevFavorites) => {
@@ -107,7 +112,6 @@ export function MainLayout() {
     if (favorites.length === 0) return;
 
     refreshFavoriteRates();
-
   }, [favorites]);
 
   useEffect(() => {
@@ -121,6 +125,19 @@ export function MainLayout() {
   useEffect(() => {
     localStorage.setItem("logs", JSON.stringify(logs));
   }, [logs]);
+
+  const [, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams({
+      from:fromCurrency,
+      to:toCurrency
+    },
+    { 
+      replace: true 
+    }
+  );
+  }, [fromCurrency, toCurrency]);
 
   return (
     <div className="min-h-screen">

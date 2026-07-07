@@ -26,15 +26,16 @@ export function HistoryChart({ historyData, period}) {
   const yAxisTicks = buildYAxisTicks(chartData);
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={400} tabIndex={-1}>
       <AreaChart
         data={chartData}
         margin={{
-          top: 10,
+          top: 0,
           right: 30,
-          left: 20,
+          left: 10,
           bottom: 30,
         }}
+        tabIndex={-1}
       >
         <defs>
           <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">

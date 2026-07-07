@@ -96,7 +96,7 @@ export function LiveMarketTicker() {
         </span>
       </div>
 
-      <div className="flex-1 bg-[#171719] overflow-x-auto text-center hide-scrollbar">
+      <div className="flex-1 bg-[#171719] overflow-x-auto text-center hide-scrollbar" tabIndex={-1}>
         
         {loading && <p className="text-white text-sm pt-2">Loading...</p>}
 
@@ -107,13 +107,6 @@ export function LiveMarketTicker() {
             {mapCurrencyPairs.map((currencyPair) => (
               <CurrencyPair
                 key={currencyPair.quote}
-                currencyPair={currencyPair}
-              />
-            ))}
-
-            {mapCurrencyPairs.map((currencyPair) => (
-              <CurrencyPair
-                key={`copy-${currencyPair.quote}`}
                 currencyPair={currencyPair}
               />
             ))}

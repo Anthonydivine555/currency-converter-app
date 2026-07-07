@@ -3,20 +3,19 @@ import { useState, useEffect } from "react";
 import { CurrencyButton } from "./CurrencyButton";
 import { CurrencySearch } from "./CurrencySearch";
 
-
 export function CurrencyPicker({
-  isOpen,
   setIsOpen,
   setSelectedCurrency,
   selectedCurrency,
+  isOpen,
 }) {
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currencySearch, setCurrencySearch] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
 
   useEffect(() => {
     const fetchCurrencies = async () => {
-
       setLoading(true);
 
       try {
@@ -34,6 +33,43 @@ export function CurrencyPicker({
 
     fetchCurrencies();
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!isOpen) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+
+        setHighlightedIndex((prev) =>
+          Math.min(prev + 1, currencies.length - 1),
+        );
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+
+        setHighlightedIndex((prev) => Math.max(prev - 1, 0));
+      }
+
+      if (e.key === "Enter") {
+        e.preventDefault();
+
+        handleButtonClick(visibleCurrencies[highlightedIndex].iso_code);
+      }
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+
+  }, [isOpen, highlightedIndex, currencies]);
 
   const popularCurrencyCodes = ["USD", "EUR", "GBP"];
 
@@ -54,106 +90,143 @@ export function CurrencyPicker({
     );
   });
 
+  function handleButtonClick(currency) {
+    setSelectedCurrency(currency);
+    setIsOpen(false);
+  }
+
+  const visibleCurrencies =
+    currencySearch.trim() === ""
+      ? [...popularCurrencies, ...otherCurrencies]
+      : filteredCurrencies;
+
+  const currencyIndexMap = {};
+
+  visibleCurrencies.forEach((currency, index) => {
+    currencyIndexMap[currency.iso_code] = index;
+  });
+
+
   return (
     <div
-      className={`absolute z-50 right-0 top-full mt-2 transition-all duration-300 w-[376px]
+      className="absolute z-50 right-0 top-full mt-2 transition-all duration-300 w-[376px]
         max-sm:w-full bg-[#202022] border border-[#3D3D3D] p-[8px] space-y-2 rounded-lg
-        ${isOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-2 pointer-events-none"} 
-        `}>
-      <CurrencySearch
-        currencySearch={currencySearch}
-        setCurrencySearch={setCurrencySearch}
-      />
+        "
+    >
+      {loading ? (
+        <p className="px-4 py-20 text-sm text-gray-400 text-center">
+          loading...
+        </p>
+      ) : (
+        <>
+          <CurrencySearch
+            currencySearch={currencySearch}
+            setCurrencySearch={setCurrencySearch}
+            setIsOpen={setIsOpen}
+            isOpen={isOpen}
+          />
 
-      <div className="max-h-[394px] overflow-y-auto flex flex-col gap-[4px] scrollbar-hide">
-        {currencySearch ? (
-          <div className="currency-container w-full">
-            {filteredCurrencies.map((currency) => {
-              const flagCode = currency.iso_code.slice(0, 2).toLowerCase();
+          <div className="max-h-[394px] overflow-y-auto flex flex-col gap-[4px] scrollbar-hide">
+            {currencySearch ? (
+              <div className="currency-container w-full">
+                {filteredCurrencies.map((currency) => {
+                  const index = currencyIndexMap[currency.iso_code];
 
-              return (
-                <CurrencyButton
-                  key={currency.iso_code}
-                  flagCode={flagCode}
-                  currency={currency}
-                  setSelectedCurrency={setSelectedCurrency}
-                  setIsOpen={setIsOpen}
-                  selectedCurrency={selectedCurrency}
-                  key={currency.iso_code}
-                  setCurrencySearch={setCurrencySearch}
-                />
-              );
-            })}
+                  const flagCode = currency.iso_code.slice(0, 2).toLowerCase();
+
+                  return (
+                    <CurrencyButton
+                      key={currency.iso_code}
+                      flagCode={flagCode}
+                      currency={currency}
+                      setSelectedCurrency={setSelectedCurrency}
+                      setIsOpen={setIsOpen}
+                      selectedCurrency={selectedCurrency}
+                      setCurrencySearch={setCurrencySearch}
+                      handleButtonClick={handleButtonClick}
+                      highlightedIndex={highlightedIndex}
+                      index={index}
+
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <>
+                <div className="count-header p-[8px] flex items-center gap-[10px] border-b border-[#2E2E2E]">
+                  <h3 className="text-[10px] md:text-xs text-[#9D9D9D] flex-1 text-left">
+                    POPULAR
+                  </h3>
+                  <span className="text-[10px] md:text-xs text-[#9D9D9D]">
+                    {popularCurrencies.length}
+                  </span>
+                </div>
+
+                <div className="currency-container w-full">
+                  {popularCurrencies.map((currency) => {
+                    const index = currencyIndexMap[currency.iso_code];
+
+                    const flagCode = currency.iso_code
+                      .slice(0, 2)
+                      .toLowerCase();
+
+                    return (
+                      <CurrencyButton
+                        flagCode={flagCode}
+                        currency={currency}
+                        setSelectedCurrency={setSelectedCurrency}
+                        setIsOpen={setIsOpen}
+                        selectedCurrency={selectedCurrency}
+                        key={currency.iso_code}
+                        setCurrencySearch={setCurrencySearch}
+                        handleButtonClick={handleButtonClick}
+                        highlightedIndex={highlightedIndex}
+                        index={index}
+                    
+                      />
+                    );
+                  })}
+                </div>
+
+                <div className="count-header p-[8px] flex gap-[10px] border-b border-[#2E2E2E]">
+                  <h3 className="text-[10px] md:text-xs text-[#9D9D9D] flex-1 text-left">
+                    OTHER CURRENCIES
+                  </h3>
+                  <span className="text-[10px] md:text-xs text-[#9D9D9D]">
+                    {otherCurrencies.length}
+                  </span>
+                </div>
+
+                <div className="currency-container w-full">
+                  {otherCurrencies.map((currency) => {
+                    const index = currencyIndexMap[currency.iso_code];
+
+                    const flagCode = currency.iso_code
+                      .slice(0, 2)
+                      .toLowerCase();
+
+                    return (
+                      <CurrencyButton
+                        flagCode={flagCode}
+                        currency={currency}
+                        setSelectedCurrency={setSelectedCurrency}
+                        setIsOpen={setIsOpen}
+                        selectedCurrency={selectedCurrency}
+                        key={currency.iso_code}
+                        setCurrencySearch={setCurrencySearch}
+                        handleButtonClick={handleButtonClick}
+                        highlightedIndex={highlightedIndex}
+                        index={index}
+
+                      />
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
-        ) : (
-          <>
-            <div className="count-header p-[8px] flex gap-[10px] border-b border-[#2E2E2E]">
-              <h3 className="text-[10px] md:text-xs text-[#9D9D9D] flex-1">
-                POPULAR
-              </h3>
-              <span className="text-[10px] md:text-xs text-[#9D9D9D]">
-                {popularCurrencies.length}
-              </span>
-            </div>
-            {loading && (
-              <p className="px-4 py-20 text-sm text-gray-400 text-center">
-                {" "}
-                loading...
-              </p>
-            )}
-
-            <div className="currency-container w-full">
-              {popularCurrencies.map((currency) => {
-                const flagCode = currency.iso_code.slice(0, 2).toLowerCase();
-
-                return (
-                  <CurrencyButton
-                    flagCode={flagCode}
-                    currency={currency}
-                    setSelectedCurrency={setSelectedCurrency}
-                    setIsOpen={setIsOpen}
-                    selectedCurrency={selectedCurrency}
-                    key={currency.iso_code}
-                    setCurrencySearch={setCurrencySearch}
-                  />
-                );
-              })}
-            </div>
-
-            <div className="count-header p-[8px] flex gap-[10px] border-b border-[#2E2E2E]">
-              <h3 className="text-[10px] md:text-xs text-[#9D9D9D] flex-1">
-                OTHER CURRENCIES
-              </h3>
-              <span className="text-[10px] md:text-xs text-[#9D9D9D]">
-                {otherCurrencies.length}
-              </span>
-            </div>
-            {loading && (
-              <p className="px-4 py-3 text-sm text-gray-400 text-center">
-                {" "}
-                loading...
-              </p>
-            )}
-            <div className="currency-container w-full">
-              {otherCurrencies.map((currency) => {
-                const flagCode = currency.iso_code.slice(0, 2).toLowerCase();
-
-                return (
-                  <CurrencyButton
-                    flagCode={flagCode}
-                    currency={currency}
-                    setSelectedCurrency={setSelectedCurrency}
-                    setIsOpen={setIsOpen}
-                    selectedCurrency={selectedCurrency}
-                    key={currency.iso_code}
-                    setCurrencySearch={setCurrencySearch}
-                  />
-                );
-              })}
-            </div>
-          </>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

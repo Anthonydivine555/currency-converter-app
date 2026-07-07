@@ -3,7 +3,7 @@
 function Period({ text, active, onClick }) {
   return (
     <button
-      className={`px-[16px] py-[12px] rounded-[8px] text-[10px] text-xs ${active ? "bg-[#2E2E2E] text-white" : "text-[#9D9D9D]"} cursor-pointer`}
+      className={`px-[16px] py-[12px] rounded-[8px] text-[10px] text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CEF739] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A] rounded-lg ${active ? "bg-[#2E2E2E] text-white" : "text-[#9D9D9D]"} cursor-pointer`}
       onClick={onClick}
     >
       {text}
@@ -14,7 +14,7 @@ function Period({ text, active, onClick }) {
 export function PeriodStats({period, setPeriod}) {
 
   return (
-    <div className="overflow-x-hidden rounded-xl bg-[#171719]">
+    <div className="bg-[#171719] rounded-xl">
       <Period
         text="1D"
         active={period === "1D"}

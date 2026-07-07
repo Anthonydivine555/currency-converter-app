@@ -1,20 +1,34 @@
 import { CheckIcon } from "@phosphor-icons/react";
+import { useEffect, useRef } from "react";
 
-
-export function CurrencyButton({currency, flagCode, setSelectedCurrency, setIsOpen, selectedCurrency, setCurrencySearch}) {
-
-  function handleButtonClick(currency) {
-    setSelectedCurrency(currency.iso_code)
-    setIsOpen(false)
-  }
+export function CurrencyButton({
+  currency,
+  flagCode,
+  selectedCurrency,
+  setCurrencySearch,
+  handleButtonClick,
+  highlightedIndex,
+  index,
+}) {
+  const currencyRefs = useRef([]);
+  useEffect(() => {
+    currencyRefs.current[highlightedIndex]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  }, [highlightedIndex]);
 
   return (
     <button
-      className="px-[8px] py-[12px] flex gap-[12px] items-center w-full"
+      className={`px-[8px] py-[12px] flex gap-[12px] items-center w-full ${index === highlightedIndex ? "border-2 border-[#CEF739]" : ""}`}
       onClick={() => {
-        handleButtonClick(currency)
-        setCurrencySearch('')
+        handleButtonClick(currency.iso_code);
+        setCurrencySearch("");
       }}
+      ref={(element) => {
+        currencyRefs.current[index] = element;
+      }}
+      tabIndex={-1}
     >
       <div className="currency-flag w-[20px] h-[20px] rounded-full overflow-hidden">
         <img

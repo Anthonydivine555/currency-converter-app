@@ -1,7 +1,8 @@
 // import { ConvertInput } from "./ConvertInput";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CurrencyPicker } from "./CurrencyPicker";
 import { ConvertInput } from "./ConvertInput";
+// import { Divide } from "@phosphor-icons/react";
 // import CurrencyInput from "react-currency-input-field";
 
 export function CurrencySelection({
@@ -12,29 +13,81 @@ export function CurrencySelection({
   conversionInput,
   setConversionInput,
   readOnly,
+  handleSwaping,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const tag = document.activeElement.tagName;
+
+      // ignore typing
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+      const key = e.key.toLowerCase();
+
+      if (e.altKey && readOnly === true && key === "t") {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+      if (e.altKey && readOnly === false && key === "f") {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+
+      if (e.ctrlKey && e.shiftKey && key === "s") {
+        e.preventDefault();
+        handleSwaping();
+      }
+
+      if (key === "escape") setIsOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const selectedFlag = selectedCurrency.slice(0, 2).toLowerCase();
 
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="p-[20px] bg-[#202022] rounded-2xl flex flex-col gap-[20px] w-full md:w-[40%] border border-[#2E2E2E] max-sm:relative">
+    <div
+      className="p-[20px] bg-[#202022] rounded-2xl flex flex-col gap-[20px] w-full md:w-[40%] border border-[#2E2E2E] max-sm:relative"
+      ref={dropdownRef}
+    >
       <h1 className="text-[#C6C6C6] text-xs md:text-xs">{heading}</h1>
       <div className="flex gap-3 items-center">
         <ConvertInput
           value={conversionInput}
-          onChange={(event) => 
-            setConversionInput(event.target.value)
-          }
+          onChange={(event) => setConversionInput(event.target.value)}
           color={color}
           readOnly={readOnly}
           conversionInput={conversionInput}
         />
 
-        <div className="bg-[#2E2E2E] border border-[#3D3D3D] rounded-lg sm:relative cursor-pointer">
-          <div
-            className="flex gap-[8px] items-center p-[10px]"
-            onClick={() => setIsOpen(!isOpen)}
+        <div className="bg-[#2E2E2E] border border-[#3D3D3D] sm:relative rounded-lg">
+          <button
+            className="flex gap-[8px] items-center p-[10px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CEF739] focus-visible:ring-offset-2  cursor-pointer 
+            focus-visible:ring-offset-[#0A0A0A] rounded-lg"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
           >
             <span className="w-[20px] h-[20px] rounded-full overflow-hidden">
               <img
@@ -59,13 +112,17 @@ export function CurrencySelection({
                 fill="white"
               />
             </svg>
-          </div>
-          <CurrencyPicker
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            setSelectedCurrency={setSelectedCurrency}
-            selectedCurrency={selectedCurrency}
-          />
+          </button>
+          {isOpen && (
+            <div className="animate-fadeIn">
+              <CurrencyPicker
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                setSelectedCurrency={setSelectedCurrency}
+                selectedCurrency={selectedCurrency}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
