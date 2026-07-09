@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { CurrencyPicker } from "./CurrencyPicker";
 import { ConvertInput } from "./ConvertInput";
+import { NumericFormat } from "react-number-format";
 // import { Divide } from "@phosphor-icons/react";
 // import CurrencyInput from "react-currency-input-field";
 
@@ -73,12 +74,15 @@ export function CurrencySelection({
     >
       <h1 className="text-[#C6C6C6] text-xs md:text-xs">{heading}</h1>
       <div className="flex gap-3 items-center">
-        <ConvertInput
+        <NumericFormat
+          customInput={ConvertInput}
           value={conversionInput}
-          onChange={(event) => setConversionInput(event.target.value)}
+          thousandSeparator
+          onValueChange={(values) => {
+            setConversionInput(values.floatValue ?? 0);
+          }}
           color={color}
           readOnly={readOnly}
-          conversionInput={conversionInput}
         />
 
         <div className="bg-[#2E2E2E] border border-[#3D3D3D] sm:relative rounded-lg">

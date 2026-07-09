@@ -10,8 +10,28 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
   const [period, setPeriod] = useState("1M");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentTime, setCurrentTime] = useState("");
 
+  useEffect(() => {
+  const updateTime = () => {
+    const time = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Berlin",
+      timeZoneName: "short",
+    })
+      .format(new Date())
+      .replace(":", ".");
 
+    setCurrentTime(time);
+  };
+
+  updateTime();
+
+  const interval = setInterval(updateTime, 60000);
+
+  return () => clearInterval(interval);
+}, []);
 
   useEffect(() => {
     if (!fromCurrency || !toCurrency) return;
@@ -140,7 +160,7 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
         </div>
         <PeriodStats period={period} setPeriod={setPeriod} />
       </div>
-      <ChartContainer period={period} fromCurrency={fromCurrency} toCurrency={toCurrency}  historyData={historyData} tabIndex={-1} />
+      <ChartContainer period={period} fromCurrency={fromCurrency} toCurrency={toCurrency}  historyData={historyData} tabIndex={-1} currentTime={currentTime}/>
     </div>
   );
 }

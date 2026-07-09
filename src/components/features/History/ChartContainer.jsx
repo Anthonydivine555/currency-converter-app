@@ -6,6 +6,7 @@ export function ChartContainer({
   fromCurrency,
   toCurrency,
   historyData,
+  currentTime
 }) {
 
   const latest = historyData[historyData.length - 1];
@@ -17,7 +18,7 @@ export function ChartContainer({
           {fromCurrency}/{toCurrency}
         </h3>
         <p className="text-[#9D9D9D] md:text-xs text-[10px]">
-          {latest.rate.toFixed(4)} · {formatChartDate(latest.date)}
+          {latest.rate.toFixed(2)} · {formatChartDate(latest.date)} {currentTime}
         </p>
       </div>
       <HistoryChart period={period} historyData={historyData} />

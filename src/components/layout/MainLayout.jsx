@@ -29,7 +29,7 @@ export function MainLayout() {
   });
 
   const [amount, setAmount] = useState(1);
-  const [convertedAmount, setConvertedAmount] = useState("");
+  const [convertedAmount, setConvertedAmount] = useState('');
 
   const [logs, setLogs] = useState(() => {
     const savedlogs = localStorage.getItem("logs");

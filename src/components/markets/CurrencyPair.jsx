@@ -2,6 +2,7 @@
 
 export function CurrencyPair({currencyPair}) {
 
+
   const formattedChange =
   currencyPair.change !== undefined
     ? currencyPair.change.toFixed(2)

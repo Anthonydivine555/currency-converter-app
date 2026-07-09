@@ -9,6 +9,7 @@ export function LiveMarketTicker() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     const fetchCurrencies = async () => {
       setLoading(true);
@@ -74,6 +75,7 @@ export function LiveMarketTicker() {
   }));
 
 
+
   return (
     <div className="flex w-full">
       <div className="px-[8px] py-[12px] md:px-[16px] bg-[#CEF739] flex gap-2 items-center">
@@ -103,7 +105,7 @@ export function LiveMarketTicker() {
         {error && <p className="text-white text-sm">{error}</p>}
 
         {!loading && !error && (
-          <div className="ticker-track flex">
+          <div className="ticker-track w-max flex">
             {mapCurrencyPairs.map((currencyPair) => (
               <CurrencyPair
                 key={currencyPair.quote}
