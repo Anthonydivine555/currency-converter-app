@@ -1,7 +1,7 @@
 import {TabContainer} from '../tabUi/TabContainer'
 import { FavouriteItem } from "./FavouriteItem.jsx";
 import {ActiveFavouriteBtn} from '../../../utils/ActiveFavouriteBtn'
-import {EmptyState} from '../tabUi/EmptyState'
+import {EmptyState} from '../../tabUi/EmptyState'
 
 export function FavouriteTab({favorites, favoriteRates, handleToggleFavorite, setFavorites}) {
 

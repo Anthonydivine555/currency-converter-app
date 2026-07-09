@@ -1,4 +1,4 @@
-import { Button } from "./button";
+import { Button } from "./Button";
 import { CurrencySelection } from "./CurrencySelection";
 import { useEffect, useState, useRef } from "react";
 import { ActiveFavouriteBtn } from "../../utils/ActiveFavouriteBtn";

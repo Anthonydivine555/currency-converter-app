@@ -1,6 +1,6 @@
 import {TabContainer} from '../tabUi/TabContainer'
 import { LogItem } from "./LogItem";
-import {EmptyState} from '../tabUi/EmptyState'
+import {EmptyState} from '../../tabUi/EmptyState'
 
 export function LogTab({logs, setLogs}) {
 
