@@ -1,7 +1,7 @@
 import {TabContainer} from '../tabUi/TabContainer'
 import { FavouriteItem } from "./FavouriteItem.jsx";
 import {ActiveFavouriteBtn} from '../../../utils/ActiveFavouriteBtn'
-import {EmptyState} from '../../tabUi/EmptyState'
+import {EmptyState} from '../tabUi/EmptyState'
 
 export function FavouriteTab({favorites, favoriteRates, handleToggleFavorite, setFavorites}) {
 
@@ -14,8 +14,8 @@ export function FavouriteTab({favorites, favoriteRates, handleToggleFavorite, se
   return(
     favoriteList.length === 0 ? (
       <EmptyState
-       header={'No pinned pairs yet'} 
-       message={'Pin a pair to track its rate here. Tap the star icon on any conversion or comparison row..'}
+       header='No pinned pairs yet' 
+       message='Pin a pair to track its rate here. Tap the star icon on any conversion or comparison row..'
        /> 
     ) : (
       <TabContainer>

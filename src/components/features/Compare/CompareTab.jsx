@@ -2,15 +2,15 @@
 import {CompareItem} from './CompareItem'
 import { TabContainer } from "../tabUi/TabContainer";
 import {compareCurrencies} from '../../data/compareCurrency'
-import {EmptyState} from '../../tabUi/EmptyState'
+import {EmptyState} from '../tabUi/EmptyState'
 
 
 export function CompareTab({compareData, loading, error, handleToggleFavorite, favorites, amount, fromCurrency}) {
 
   if (!amount) {
     return (
-      <EmptyState  header={'No comparison avaliable'} 
-       message={'Enter an amount in send above to see what your money is worth in other currencies.'}/>
+      <EmptyState  header='No comparison avaliable' 
+       message='Enter an amount in send above to see what your money is worth in other currencies.'/>
     );
   }
   

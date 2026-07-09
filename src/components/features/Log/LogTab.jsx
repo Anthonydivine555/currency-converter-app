@@ -1,6 +1,6 @@
 import {TabContainer} from '../tabUi/TabContainer'
 import { LogItem } from "./LogItem";
-import {EmptyState} from '../../tabUi/EmptyState'
+import {EmptyState} from '../tabUi/EmptyState'
 
 export function LogTab({logs, setLogs}) {
 
@@ -20,8 +20,8 @@ export function LogTab({logs, setLogs}) {
   return (
     logs.length === 0 ? (
       <EmptyState 
-        header={'No conversions logged yet'} 
-        message={'Every conversion is recorded here automatically when you tap LOG CONVERSION. Your log is private to this session and this browser.'}
+        header='No conversions logged yet' 
+        message='Every conversion is recorded here automatically when you tap LOG CONVERSION. Your log is private to this session and this browser.'
       />
     ) : (
       <TabContainer>
