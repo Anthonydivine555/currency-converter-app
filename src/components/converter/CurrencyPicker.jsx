@@ -8,6 +8,7 @@ export function CurrencyPicker({
   setSelectedCurrency,
   selectedCurrency,
   isOpen,
+  placement,
 }) {
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -107,21 +108,13 @@ export function CurrencyPicker({
 
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    if (isOpen && dropdownRef.current) {
-      dropdownRef.current.scrollIntoView({
-        
-        behavior: "smooth",
-         block: "start",
-      });
-    }
-  }, [isOpen]);
-
   return (
     <div
-      className="absolute z-50 right-0 top-full mt-2 transition-all duration-300 w-[376px]
+      className={`absolute z-50 right-0  ${
+        placement === "top" ? "bottom-full mb-2" : "top-full mt-2"
+      } mt-2 transition-all duration-300 w-[376px]
         max-sm:w-full bg-[#202022] border border-[#3D3D3D] p-[8px] space-y-2 rounded-lg
-        "
+`}
       ref={dropdownRef}
     >
       {loading ? (

@@ -67,6 +67,25 @@ export function CurrencySelection({
     };
   }, []);
 
+   const buttonRef = useRef(null);
+
+   const [placement, setPlacement] = useState("bottom");
+   
+   useEffect(() => {
+     if (isOpen && buttonRef.current) {
+       const rect = buttonRef.current.getBoundingClientRect();
+   
+       const dropdownHeight = 300;
+   
+       if (window.innerHeight - rect.bottom < dropdownHeight) {
+         setPlacement("top");
+       } else {
+         setPlacement("bottom");
+       }
+     }
+   }, [isOpen]);
+   
+
   return (
     <div
       className="p-[20px] bg-[#202022] rounded-2xl flex flex-col gap-[20px] w-full md:w-[40%] border border-[#2E2E2E] max-sm:relative"
@@ -92,6 +111,7 @@ export function CurrencySelection({
             onClick={() => {
               setIsOpen(!isOpen);
             }}
+            ref={buttonRef}
           >
             <span className="w-[20px] h-[20px] rounded-full overflow-hidden">
               <img
@@ -124,6 +144,7 @@ export function CurrencySelection({
                 setIsOpen={setIsOpen}
                 setSelectedCurrency={setSelectedCurrency}
                 selectedCurrency={selectedCurrency}
+                placement={placement}
               />
             </div>
           )}
