@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CurrencyButton } from "./CurrencyButton";
 import { CurrencySearch } from "./CurrencySearch";
 
@@ -35,9 +35,7 @@ export function CurrencyPicker({
   }, []);
 
   useEffect(() => {
-
     const handleKeyDown = (e) => {
-      
       if (!isOpen) return;
 
       if (e.key === "ArrowDown") {
@@ -70,7 +68,6 @@ export function CurrencyPicker({
     window.addEventListener("keydown", handleKeyDown);
 
     return () => window.removeEventListener("keydown", handleKeyDown);
-
   }, [isOpen, highlightedIndex, currencies]);
 
   const popularCurrencyCodes = ["USD", "EUR", "GBP"];
@@ -108,12 +105,24 @@ export function CurrencyPicker({
     currencyIndexMap[currency.iso_code] = index;
   });
 
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen && dropdownRef.current) {
+      dropdownRef.current.scrollIntoView({
+        
+        behavior: "smooth",
+         block: "start",
+      });
+    }
+  }, [isOpen]);
 
   return (
     <div
       className="absolute z-50 right-0 top-full mt-2 transition-all duration-300 w-[376px]
         max-sm:w-full bg-[#202022] border border-[#3D3D3D] p-[8px] space-y-2 rounded-lg
         "
+      ref={dropdownRef}
     >
       {loading ? (
         <p className="px-4 py-20 text-sm text-gray-400 text-center">
@@ -148,7 +157,6 @@ export function CurrencyPicker({
                       handleButtonClick={handleButtonClick}
                       highlightedIndex={highlightedIndex}
                       index={index}
-
                     />
                   );
                 })}
@@ -184,7 +192,6 @@ export function CurrencyPicker({
                         handleButtonClick={handleButtonClick}
                         highlightedIndex={highlightedIndex}
                         index={index}
-                    
                       />
                     );
                   })}
@@ -219,7 +226,6 @@ export function CurrencyPicker({
                         handleButtonClick={handleButtonClick}
                         highlightedIndex={highlightedIndex}
                         index={index}
-
                       />
                     );
                   })}
