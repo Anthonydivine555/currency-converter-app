@@ -13,6 +13,7 @@ This is a solution to the [FX Checker challenge on Frontend Mentor](https://www.
   - [What I learned](#what-i-learned)
   - [Continued development](#continued-development)
   - [AI Collaboration](#ai-collaboration)
+  - [Keyboard Shortcuts](#Keyboard-Shortcuts)
   - [Author](#author)
 
 
@@ -112,6 +113,23 @@ In future projects, I'd like to further improve my accessibility skills, optimiz
 I used ChatGPT throughout the project for brainstorming ideas, debugging issues, explaining concepts, and generating boilerplate code. It was especially helpful for speeding up repetitive tasks and suggesting different implementation approaches.
 
 While the generated code was often a good starting point, it didn't always fully capture my specific requirements. In those cases, I iterated on its suggestions, refined the prompts, and adapted the code to arrive at a solution that best fit the project's needs.
+
+##  Keyboard Shortcuts
+
+| Shortcut | Description |
+| :-------- | :---------- |
+| `Alt + F` | Open the **From** currency dropdown. |
+| `Alt + T` | Open the **To** currency dropdown. |
+| `↑` / `↓` | Navigate through the currency list. |
+| `Enter` | Select the highlighted currency. |
+| `Esc` | Close the active dropdown. |
+| `Alt + S` | Swap the selected currencies. |
+| `Alt + 1` | View the **1 Day** chart. |
+| `Alt + 2` | View the **1 Week** chart. |
+| `Alt + 3` | View the **1 Month** chart. |
+| `Alt + 4` | View the **3 Months** chart. |
+| `Alt + 5` | View the **1 Year** chart. |
+| `Alt + 6` | View the **5 Years** chart. |
 
 ## Author
 
