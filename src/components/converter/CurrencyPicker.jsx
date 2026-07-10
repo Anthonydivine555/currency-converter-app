@@ -35,7 +35,9 @@ export function CurrencyPicker({
   }, []);
 
   useEffect(() => {
+
     const handleKeyDown = (e) => {
+      
       if (!isOpen) return;
 
       if (e.key === "ArrowDown") {

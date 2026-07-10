@@ -29,7 +29,7 @@ export function MainLayout() {
   });
 
   const [amount, setAmount] = useState(1);
-  const [convertedAmount, setConvertedAmount] = useState('');
+  const [convertedAmount, setConvertedAmount] = useState("");
 
   const [logs, setLogs] = useState(() => {
     const savedlogs = localStorage.getItem("logs");
@@ -129,51 +129,54 @@ export function MainLayout() {
   const [, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    setSearchParams({
-      from:fromCurrency,
-      to:toCurrency
-    },
-    { 
-      replace: true 
-    }
-  );
+    setSearchParams(
+      {
+        from: fromCurrency,
+        to: toCurrency,
+      },
+      {
+        replace: true,
+      },
+    );
   }, [fromCurrency, toCurrency]);
 
   return (
     <div className="min-h-screen">
       <Header />
 
-      <LiveMarketTicker />
+      <div className="w-full pt-14 md:pt-19">
+        <LiveMarketTicker />
 
-      <main className="max-w-5xl w-[95%] mx-auto py-[48px] flex flex-col gap-[40px] md:gap-[32px]">
-        <ConverterSection
-          favorites={favorites}
-          handleToggleFavorite={handleToggleFavorite}
-          setFavorites={setFavorites}
-          fromCurrency={fromCurrency}
-          toCurrency={toCurrency}
-          rate={rate}
-          setFromCurrency={setFromCurrency}
-          setToCurrency={setToCurrency}
-          setRate={setRate}
-          amount={amount}
-          setAmount={setAmount}
-          convertedAmount={convertedAmount}
-          setConvertedAmount={setConvertedAmount}
-          setLogs={setLogs}
-        />
+        <main className="max-w-5xl w-[95%] mx-auto py-[48px] flex flex-col gap-[40px] md:gap-[32px]">
+          <ConverterSection
+            favorites={favorites}
+            handleToggleFavorite={handleToggleFavorite}
+            setFavorites={setFavorites}
+            fromCurrency={fromCurrency}
+            toCurrency={toCurrency}
+            rate={rate}
+            setFromCurrency={setFromCurrency}
+            setToCurrency={setToCurrency}
+            setRate={setRate}
+            amount={amount}
+            setAmount={setAmount}
+            convertedAmount={convertedAmount}
+            setConvertedAmount={setConvertedAmount}
+            setLogs={setLogs}
+          />
 
-        <TabNavigation
-          favorites={favorites}
-          favoriteRates={favoriteRates}
-          handleToggleFavorite={handleToggleFavorite}
-          logs={logs}
-          setLogs={setLogs}
-          amount={amount}
-          fromCurrency={fromCurrency}
-          toCurrency={toCurrency}
-        />
-      </main>
+          <TabNavigation
+            favorites={favorites}
+            favoriteRates={favoriteRates}
+            handleToggleFavorite={handleToggleFavorite}
+            logs={logs}
+            setLogs={setLogs}
+            amount={amount}
+            fromCurrency={fromCurrency}
+            toCurrency={toCurrency}
+          />
+        </main>
+      </div>
     </div>
   );
 }

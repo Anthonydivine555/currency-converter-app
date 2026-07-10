@@ -4,34 +4,35 @@ import { ConversionStats } from "./ConversionStats";
 import { ChartContainer } from "./ChartContainer";
 import { PeriodStats } from "./PeriodStats";
 import { getHistoryDateRange } from "../../../utils/getHistoryDateRange";
+import { EmptyState } from "../tabUi/EmptyState";
 
 export function HistoryTab({ fromCurrency, toCurrency }) {
   const [historyData, setHistoryData] = useState([]);
   const [period, setPeriod] = useState("1M");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
-  const updateTime = () => {
-    const time = new Intl.DateTimeFormat("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Berlin",
-      timeZoneName: "short",
-    })
-      .format(new Date())
-      .replace(":", ".");
+    const updateTime = () => {
+      const time = new Intl.DateTimeFormat("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Europe/Berlin",
+        timeZoneName: "short",
+      })
+        .format(new Date())
+        .replace(":", ".");
 
-    setCurrentTime(time);
-  };
+      setCurrentTime(time);
+    };
 
-  updateTime();
+    updateTime();
 
-  const interval = setInterval(updateTime, 60000);
+    const interval = setInterval(updateTime, 60000);
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!fromCurrency || !toCurrency) return;
@@ -56,11 +57,10 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
           },
         );
 
-
         setHistoryData(response.data);
       } catch (err) {
         console.error(err);
-        setError("Failed to fetch history data.");
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -70,27 +70,26 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
   }, [fromCurrency, toCurrency, period]);
 
   useEffect(() => {
-  const handleKeyDown = (e) => {
-    const tag = document.activeElement.tagName;
+    const handleKeyDown = (e) => {
+      const tag = document.activeElement.tagName;
 
-    // ignore typing
-    if (tag === "INPUT" || tag === "TEXTAREA") return;
+      // ignore typing
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
 
-    const key = e.key.toLowerCase();
+      const key = e.key.toLowerCase();
 
-    if (e.altKey && key === "1") setPeriod("1D");
-    if (e.altKey && key === "2") setPeriod("1W");
-    if (e.altKey && key === "3") setPeriod("1M");
-    if (e.altKey && key === "4") setPeriod("3M");
-    if (e.altKey && key === "5") setPeriod("1Y");
-    if (e.altKey && key === "6") setPeriod("5Y");
-  
-  };
+      if (e.altKey && key === "1") setPeriod("1D");
+      if (e.altKey && key === "2") setPeriod("1W");
+      if (e.altKey && key === "3") setPeriod("1M");
+      if (e.altKey && key === "4") setPeriod("3M");
+      if (e.altKey && key === "5") setPeriod("1Y");
+      if (e.altKey && key === "6") setPeriod("5Y");
+    };
 
-  window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
-  return () => window.removeEventListener("keydown", handleKeyDown);
-}, []);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   if (loading) {
     return <p className="text-center p-20 text-sm text-white">Loading...</p>;
@@ -145,6 +144,15 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
     },
   ];
 
+  if (error) {
+    return (
+      <EmptyState
+        header="No pinned pairs yet"
+        message="Pin a pair to track its rate here. Tap the star icon on any conversion or comparison row.."
+      />
+    );
+  }
+
   return (
     <div className=" flex flex-col gap-[20px] w-full">
       <div className="flex gap-[10px] w-full items-center justify-between flex-wrap">
@@ -160,7 +168,14 @@ export function HistoryTab({ fromCurrency, toCurrency }) {
         </div>
         <PeriodStats period={period} setPeriod={setPeriod} />
       </div>
-      <ChartContainer period={period} fromCurrency={fromCurrency} toCurrency={toCurrency}  historyData={historyData} tabIndex={-1} currentTime={currentTime}/>
+      <ChartContainer
+        period={period}
+        fromCurrency={fromCurrency}
+        toCurrency={toCurrency}
+        historyData={historyData}
+        tabIndex={-1}
+        currentTime={currentTime}
+      />
     </div>
   );
 }

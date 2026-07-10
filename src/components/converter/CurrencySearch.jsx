@@ -9,6 +9,8 @@ export function CurrencySearch({
   const searchInputRef = useRef(null);
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+
     if (isOpen) {
       searchInputRef.current?.focus();
     }

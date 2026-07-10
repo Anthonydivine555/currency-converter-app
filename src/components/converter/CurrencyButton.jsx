@@ -20,7 +20,7 @@ export function CurrencyButton({
 
   return (
     <button
-      className={`px-[8px] py-[12px] flex gap-[12px] items-center w-full ${index === highlightedIndex ? "border-2 border-[#CEF739]" : ""}`}
+      className={`px-[8px] py-[12px] flex gap-[12px] items-center w-full ${index === highlightedIndex ? "md:border-2 md:border-[#CEF739]" : ""}`}
       onClick={() => {
         handleButtonClick(currency.iso_code);
         setCurrencySearch("");
