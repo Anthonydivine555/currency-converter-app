@@ -1,7 +1,7 @@
 
 export function Header() {
  return(
-  <div className="w-full md:py-6 py-[16px]  fixed top-0 left-0 z-50 bg-[#000000]">
+  <div className="w-full sm:py-6 py-[16px]  fixed top-0 left-0 z-50 bg-[#000000]">
     <div className="max-w-w-7xl w-[95%] flex justify-between mx-auto items-center">
       <div className="flex items-center gap-2">
         <div className="w-[20px] h-[20px] md:h-[26px] md:w-[26px] text-black logo-icon">

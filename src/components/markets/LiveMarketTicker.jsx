@@ -78,7 +78,7 @@ export function LiveMarketTicker() {
 
   return (
     <div className="flex w-full">
-      <div className="px-[8px] py-[12px] md:px-[16px] bg-[#CEF739] flex gap-2 items-center">
+      <div className="px-[8px] py-[10px] sm:py-[12px] md:px-[16px] bg-[#CEF739] flex gap-2 items-center">
         <span>
           <svg
             width="6"

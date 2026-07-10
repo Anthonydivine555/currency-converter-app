@@ -144,7 +144,7 @@ export function MainLayout() {
     <div className="min-h-screen">
       <Header />
 
-      <div className="w-full pt-14 md:pt-19">
+      <div className="w-full pt-14 sm:pt-19">
         <LiveMarketTicker />
 
         <main className="max-w-5xl w-[95%] mx-auto py-[48px] flex flex-col gap-[40px] md:gap-[32px]">
