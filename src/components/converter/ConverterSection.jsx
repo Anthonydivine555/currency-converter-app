@@ -97,8 +97,8 @@ export function ConverterSection({
   }, [fromCurrency, toCurrency]);
 
   return (
-    <div className="converter-wrapper flex flex-col gap-[36px] w-full">
-      <h1 className="text-lg md:text-xl mb-4 text-white">CHECK THE RATE</h1>
+    <div className="converter-wrapper flex flex-col gap-[16px] md:gap-[36px] w-full">
+      <h1 className="text-lg md:text-xl text-white">CHECK THE RATE</h1>
       <div className="block bg-[#171719] rounded-[20px]">
         <div className="w-full top-container p-[20px] flex gap-[24px] items-center justify-between box-border flex-col md:flex-row">
           <CurrencySelection
