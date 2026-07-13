@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { CurrencyButton } from "./CurrencyButton";
 import { CurrencySearch } from "./CurrencySearch";
 
@@ -105,8 +105,6 @@ export function CurrencyPicker({
     currencyIndexMap[currency.iso_code] = index;
   });
 
-  
-
   return (
     <div
       className="absolute z-50 right-0 top-full mt-2 transition-all duration-300 w-[376px]
@@ -122,34 +120,41 @@ export function CurrencyPicker({
           <CurrencySearch
             currencySearch={currencySearch}
             setCurrencySearch={setCurrencySearch}
-            setIsOpen={setIsOpen}
             isOpen={isOpen}
           />
 
           <div className="max-h-[394px] overflow-y-auto flex flex-col gap-[4px] scrollbar-hide">
             {currencySearch ? (
-              <div className="currency-container w-full">
-                {filteredCurrencies.map((currency) => {
-                  const index = currencyIndexMap[currency.iso_code];
+              filteredCurrencies.length > 0 ? (
+                <div className="currency-container w-full">
+                  {filteredCurrencies.map((currency) => {
+                    const index = currencyIndexMap[currency.iso_code];
 
-                  const flagCode = currency.iso_code.slice(0, 2).toLowerCase();
+                    const flagCode = currency.iso_code
+                      .slice(0, 2)
+                      .toLowerCase();
 
-                  return (
-                    <CurrencyButton
-                      key={currency.iso_code}
-                      flagCode={flagCode}
-                      currency={currency}
-                      setSelectedCurrency={setSelectedCurrency}
-                      setIsOpen={setIsOpen}
-                      selectedCurrency={selectedCurrency}
-                      setCurrencySearch={setCurrencySearch}
-                      handleButtonClick={handleButtonClick}
-                      highlightedIndex={highlightedIndex}
-                      index={index}
-                    />
-                  );
-                })}
-              </div>
+                    return (
+                      <CurrencyButton
+                        key={currency.iso_code}
+                        flagCode={flagCode}
+                        currency={currency}
+                        setSelectedCurrency={setSelectedCurrency}
+                        setIsOpen={setIsOpen}
+                        selectedCurrency={selectedCurrency}
+                        setCurrencySearch={setCurrencySearch}
+                        handleButtonClick={handleButtonClick}
+                        highlightedIndex={highlightedIndex}
+                        index={index}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex justify-center items-center py-8">
+                  <p className="text-xs text-[#9D9D9D]">No currencies found.</p>
+                </div>
+              )
             ) : (
               <>
                 <div className="count-header p-[8px] flex items-center gap-[10px] border-b border-[#2E2E2E]">
